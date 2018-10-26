@@ -12,7 +12,7 @@ module.exports = async (fastify, opts) => {
     let data = stmt.all()
 
     if (from || to) {
-      data = data.filter(v => isWithinRange(new Date(v.date), new Date(from), new Date(to || new Date())))
+      data = data.filter(v => isWithinRange(new Date(v.date), new Date(from || '2016-04-30'), new Date(to || new Date())))
     }
 
     if (year) {
