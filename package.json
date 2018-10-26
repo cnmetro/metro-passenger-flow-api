@@ -1,0 +1,35 @@
+{
+  "name": "shmetro-passenger-flow-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -l info -P app.js",
+    "lint": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinchang/shmetro-passenger-flow-api.git"
+  },
+  "keywords": [],
+  "author": "sinchang <sinchangwen@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sinchang/shmetro-passenger-flow-api/issues"
+  },
+  "homepage": "https://github.com/sinchang/shmetro-passenger-flow-api#readme",
+  "dependencies": {
+    "better-sqlite3": "^5.0.1",
+    "date-fns": "^1.29.0",
+    "fastify": "^1.11.0",
+    "fastify-autoload": "^0.5.0",
+    "fastify-cli": "^0.22.1",
+    "fastify-plugin": "^1.2.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1",
+    "tap": "^12.0.0"
+  }
+}
