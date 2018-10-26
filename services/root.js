@@ -8,7 +8,7 @@ module.exports = async (fastify, opts) => {
 
   fastify.get('/flows', async (request, reply) => {
     const { sort, year, from, to, count } = request.query
-    const stmt = db.prepare('SELECT * FROM flow')
+    const stmt = db.prepare('SELECT * FROM flow order by date desc')
     let data = stmt.all()
 
     if (from || to) {
