@@ -23,6 +23,10 @@ module.exports = function (fastify, opts, next) {
     options: Object.assign({}, opts)
   })
 
+  fastify.register(require('fastify-static'), {
+    root: path.join(__dirname, 'public')
+  })
+
   // Make sure to call next when done
   next()
 }
