@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "test:local": "tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "test": "standard && tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js",
     "lint": "standard"
