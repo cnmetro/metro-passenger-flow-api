@@ -1,5 +1,4 @@
 'use strict'
-const isWithinRange = require('date-fns/is_within_range')
 const isValid = require('date-fns/is_valid')
 const format = require('date-fns/format')
 
@@ -7,30 +6,39 @@ module.exports = async (fastify, opts) => {
   const db = fastify.db()
 
   fastify.get('/flows', async (request, reply) => {
-    const { sort, year, from, to, count } = request.query
-    const stmt = db.prepare('SELECT * FROM flow ORDER BY date DESC')
-    let data = stmt.all()
+    let { sort, year, from, to, count } = request.query
+    let sql = `SELECT * FROM flow`
 
     if (from || to) {
-      data = data.filter(v => isWithinRange(new Date(v.date), new Date(from || '2016-04-30'), new Date(to || new Date())))
+      from = from || '2016-04-30'
+      to = to || format(new Date(), 'YYYY-MM-DD')
+      sql += ` WHERE date >= '${from}' and date <= '${to}'`
     }
 
     if (year) {
-      data = data.filter(v => Number(v.date.split('-')[0]) === Number(year))
+      if (from || to) {
+        sql += ` AND strftime('%Y', date) = '${year}'`
+      } else {
+        sql += ` WHERE strftime('%Y', date) = '${year}'`
+      }
     }
 
     if (sort && sort.toLowerCase() === 'asc') {
-      data = data.sort((a, b) => a.num - b.num)
+      sql += ` ORDER BY num ASC`
     } else if (sort && sort.toLowerCase() === 'desc') {
-      data = data.sort((a, b) => b.num - a.num)
+      sql += ` ORDER BY num DESC`
+    } else {
+      sql += ' ORDER BY date DESC'
     }
 
     if (count) {
-      data.length = count
+      sql += ` LIMIT ${count}`
     }
 
+    const stmt = db.prepare(sql)
+
     return {
-      data
+      data: stmt.all()
     }
   })
 
