@@ -79,6 +79,8 @@
   <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.2.8-beta.5/dist/g2.min.js"></script>
   <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.8.9/dist/data-set.min.js"></script>
   <script>
+    var from = new URLSearchParams(location.search).get('from')
+    var to = new URLSearchParams(location.search).get('to')
     var data = []
     var urls = [
       "flows?count=30",
@@ -89,7 +91,11 @@
       "flows",
     ]
 
-    ajax(urls[0])
+    if (from || to) {
+      ajax("flows?from=" + from + "&to=" + to)
+    } else {
+      ajax(urls[0])
+    }
 
     document.getElementById('date').addEventListener('change', function () {
       ajax(urls[Number(this.value)])
