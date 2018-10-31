@@ -29,10 +29,12 @@ module.exports = function (fastify, opts, next) {
     root: path.join(__dirname, 'public')
   })
 
-  schedule.scheduleJob('0 2 * * *', () => {
-    console.log('worker running……')
-    worker(fastify)
-  })
+  if (process.env.NODE_ENV !== 'test') {
+    schedule.scheduleJob('0 2 * * *', () => {
+      console.log('worker running……')
+      worker(fastify)
+    })
+  }
 
   // Make sure to call next when done
   next()

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:local": "tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
-    "test": "standard && tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "test:local": "NODE_ENV=test tap test/*.test.js test/*/*.test.js test/*/*/*.test.js",
+    "test": "npm run lint && npm run test:local",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js",
     "lint": "standard"

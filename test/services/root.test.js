@@ -55,7 +55,7 @@ test('year', async t => {
   const res = await app.inject({
     url: '/flows?year=2017'
   })
-  t.assert(parse(res).length === 361)
+  t.assert(parse(res).length === 360)
 })
 
 test('order by num desc', async t => {
