@@ -43,7 +43,11 @@ module.exports = async (fastify, opts) => {
   })
 
   fastify.post('/flows', async (request, reply) => {
-    const { date, num } = request.body
+    const { date, num, key } = request.body
+
+    if (key !== process.env.SECRET_KEY) {
+      return reply.code(403).send({ message: 'Forbidden' })
+    }
 
     if (!isValid(new Date(date))) {
       return reply.code(400).send({ message: 'date is invalid' })
