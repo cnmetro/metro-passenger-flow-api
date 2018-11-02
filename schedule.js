@@ -20,11 +20,13 @@ module.exports = async f => {
         const num = arr[2]
         const stmt = f.db().prepare('INSERT INTO flow VALUES (?, ?)')
         stmt.run(date, Number(num))
-        sendMessage(`${date}: ${num} 万人次`)
+        console.log(`${date}:${num}万人次`)
+        sendMessage(`${date}:${num}万人次`)
         break
       }
     }
   } catch (err) {
+    console.log(err)
     sendMessage(err.message)
   }
 }

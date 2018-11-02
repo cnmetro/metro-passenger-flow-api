@@ -30,7 +30,7 @@ module.exports = function (fastify, opts, next) {
   })
 
   if (process.env.NODE_ENV !== 'test') {
-    schedule.scheduleJob('0 2 * * *', () => {
+    schedule.scheduleJob('0 */2 * * *', () => {
       console.log('worker running……')
       worker(fastify)
     })
