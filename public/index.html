@@ -67,6 +67,7 @@
     }
   </style>
   <p class="title">上海地铁日客流量数据分析（数据来自上海地铁微博，2015-04-29 - 至今，万人次 ）</p>
+  <p style="text-align: center;">最高：<span id="highest"></span> | 最低：<span id="lowest"></span></p>
   <select name="" id="date" style="display: block;margin: 0 auto;">
     <option value="0">最近 30 天</option>
     <option value="1">2018</option>
@@ -94,27 +95,31 @@
     if (from || to) {
       ajax("flows?from=" + from + "&to=" + to)
     } else {
-      ajax(urls[0])
+      ajax(urls[0]).then(data => chart.changeData(data))
     }
 
+    ajax(`flows?sort=desc`).then(data => {
+      document.getElementById('highest').innerHTML = `${data[0].num} 万人次 (${data[0].date})`
+      document.getElementById('lowest').innerHTML = `${data[data.length - 1].num} 万人次 (${data[data.length - 1].date})`
+    })
+
     document.getElementById('date').addEventListener('change', function () {
-      ajax(urls[Number(this.value)])
+      ajax(urls[Number(this.value)]).then(data => chart.changeData(data))
     })
 
     function ajax(url) {
-      fetch(url)
+      return fetch(url)
         .then(res => {
           return res.json()
         }).then(v => {
-          data = v.data
-          chart.changeData(data)
+          return v.data
         })
     }
 
     chart = new G2.Chart({
       container: 'mountNode',
       forceFit: true,
-      height: window.innerHeight - 18
+      height: window.innerHeight - 50
     });
     chart.source(data);
     chart.scale('num', {
