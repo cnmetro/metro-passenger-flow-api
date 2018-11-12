@@ -3,11 +3,17 @@ const isValid = require('date-fns/is_valid')
 const format = require('date-fns/format')
 
 module.exports = async (fastify, opts) => {
+  const locationArray = ['sh', 'bj', 'gz']
   const db = fastify.db()
 
   fastify.get('/flows', async (request, reply) => {
-    let { sort, year, from, to, count } = request.query
-    let sql = `SELECT * FROM flow`
+    let { sort, year, from, to, count, location } = request.query
+
+    if (locationArray.indexOf(location) === -1) {
+      return reply.code(400).send({ message: 'location required' })
+    }
+
+    let sql = `SELECT * FROM ${location}`
 
     if (from || to) {
       from = from || '2016-04-30'
@@ -43,7 +49,11 @@ module.exports = async (fastify, opts) => {
   })
 
   fastify.post('/flows', async (request, reply) => {
-    const { date, num, key } = request.body
+    const { date, num, key, location } = request.body
+
+    if (locationArray.indexOf(location) === -1) {
+      return reply.code(400).send({ message: 'location required' })
+    }
 
     if (key !== process.env.SECRET_KEY) {
       return reply.code(403).send({ message: 'Forbidden' })
@@ -58,7 +68,7 @@ module.exports = async (fastify, opts) => {
     }
 
     const formatedDate = format(new Date(date), 'YYYY-MM-DD')
-    const stmt = db.prepare('INSERT INTO flow VALUES (?, ?)')
+    const stmt = db.prepare(`INSERT INTO ${location} VALUES (?, ?)`)
     stmt.run(formatedDate, Number(num))
 
     return {

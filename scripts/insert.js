@@ -2,31 +2,14 @@
 
 const Database = require('better-sqlite3')
 const db = new Database('flow.db', {})
-const stmt = db.prepare('INSERT INTO bj VALUES (?, ?)')
+const stmt = db.prepare('INSERT INTO gz VALUES (?, ?)')
 
 var data = [
-  { date: '2012-06-25', num: '720.93' },
-  { date: '2012-06-24', num: '485.3' },
-  { date: '2012-06-23', num: '521.88' },
-  { date: '2012-06-22', num: '546.26' },
-  { date: '2012-06-21', num: '789.29' },
-  { date: '2012-06-20', num: '733.97' },
-  { date: '2012-06-17', num: '524.60' },
-  { date: '2012-06-16', num: '565.76' },
-  { date: '2012-06-15', num: '643.40' },
-  { date: '2012-06-14', num: '708.20' },
-  { date: '2012-06-13', num: '698.61' },
-  { date: '2012-06-12', num: '708.35' },
-  { date: '2012-06-11', num: '716.99' },
-  { date: '2012-06-10', num: '531.79' },
-  { date: '2012-06-02', num: '559.65' },
-  { date: '2012-05-31', num: '710.78' },
-  { date: '2012-05-30', num: '710.81' },
-  { date: '2012-05-29', num: '696.07' },
-  { date: '2012-05-28', num: '718.87' },
-  { date: '2012-05-27', num: '549.25' }
+  { date: '2015-02-21', num: '322.3' },
+  { date: '2015-02-20', num: '300.3' },
+  { date: '2015-02-19', num: '300.6' },
+  { date: '2015-02-18', num: '250.4' }
 ]
-
 data.forEach(item => {
   stmt.run(item.date, Number(item.num))
 })
