@@ -26,7 +26,8 @@ module.exports = function (fastify, opts, next) {
   })
 
   fastify.register(require('fastify-static'), {
-    root: path.join(__dirname, 'public')
+    root: path.join(__dirname, 'public'),
+    prefix: '/public/'
   })
 
   fastify.register(require('point-of-view'), {

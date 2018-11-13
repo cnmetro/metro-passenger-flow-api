@@ -85,7 +85,7 @@ module.exports = async (fastify, opts) => {
     const { city } = request.params
 
     if (cityArray.indexOf(city) === -1) {
-      return reply.code(400).send({ message: 'city is wrong' })
+      return reply.redirect('/public/index.html')
     }
 
     reply.view('/templates/index.html', {
