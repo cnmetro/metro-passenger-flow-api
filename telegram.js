@@ -8,6 +8,6 @@ module.exports = text => {
   }/sendMessage?chat_id=${process.env.CHAT_ID}&text=${encodeURIComponent(text)}`
 
   axios.get(url).catch(err => {
-    console.log(err)
+    console.log('telegram: ' + err)
   })
 }
