@@ -47,6 +47,7 @@ module.exports = async f => {
       }
     } catch (err) {
       console.log(err)
+      sendMessage(`${item.db}:${err.message}`)
     }
   })
 }
