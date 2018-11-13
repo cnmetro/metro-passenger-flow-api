@@ -47,7 +47,6 @@ module.exports = async f => {
       }
     } catch (err) {
       console.log(err)
-      sendMessage(err.message)
     }
   })
 }

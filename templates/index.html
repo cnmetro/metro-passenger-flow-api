@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,height=device-height">
-  <title>上海地铁日客流量数据分析</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,height=device-height" />
+  <title>{{ name }}地铁日客流量数据分析</title>
   <style>
     ::-webkit-scrollbar {
       display: none;
@@ -35,46 +35,53 @@
     </svg></a>
   <style>
     .github-corner:hover .octo-arm {
-      animation: octocat-wave 560ms ease-in-out
+      animation: octocat-wave 560ms ease-in-out;
     }
 
     @keyframes octocat-wave {
 
       0%,
       100% {
-        transform: rotate(0)
+        transform: rotate(0);
       }
 
       20%,
       60% {
-        transform: rotate(-25deg)
+        transform: rotate(-25deg);
       }
 
       40%,
       80% {
-        transform: rotate(10deg)
+        transform: rotate(10deg);
       }
     }
 
-    @media (max-width:500px) {
+    @media (max-width: 500px) {
       .github-corner:hover .octo-arm {
-        animation: none
+        animation: none;
       }
 
       .github-corner .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
+        animation: octocat-wave 560ms ease-in-out;
       }
     }
   </style>
-  <p class="title">上海地铁日客流量数据分析（数据来自上海地铁微博，2015-04-29 - 至今，万人次 ）</p>
-  <p style="text-align: center;">最高：<span id="highest"></span> | 最低：<span id="lowest"></span></p>
+  <p class="title">
+    {{ name }}地铁日客流量数据分析（数据来自{{ name }}地铁微博，万人次 ）
+  </p>
+  <p style="text-align: center;">
+    最高：<span id="highest"></span> | 最低：<span id="lowest"></span>
+  </p>
   <select name="" id="date" style="display: block;margin: 0 auto;">
     <option value="0">最近 30 天</option>
     <option value="1">2018</option>
     <option value="2">2017</option>
     <option value="3">2016</option>
     <option value="4">2015</option>
-    <option value="5">全部</option>
+    <option value="5">2014</option>
+    <option value="6">2013</option>
+    <option value="7">2012</option>
+    <option value="8">全部</option>
   </select>
   <div id="mountNode"></div>
   <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.2.8-beta.5/dist/g2.min.js"></script>
@@ -84,23 +91,30 @@
     var to = new URLSearchParams(location.search).get('to')
     var data = []
     var urls = [
-      "flows?count=30",
-      "flows?year=2018",
-      "flows?year=2017",
-      "flows?year=2016",
-      "flows?year=2015",
-      "flows",
+      'api/flows?count=30',
+      'api/flows?year=2018',
+      'api/flows?year=2017',
+      'api/flows?year=2016',
+      'api/flows?year=2015',
+      'api/flows?year=2014',
+      'api/flows?year=2013',
+      'api/flows?year=2012',
+      'api/flows?'
     ]
 
     if (from || to) {
-      ajax("flows?from=" + from + "&to=" + to)
+      ajax('api/flows?from=' + from + '&to=' + to)
     } else {
       ajax(urls[0]).then(data => chart.changeData(data))
     }
 
-    ajax(`flows?sort=desc`).then(data => {
-      document.getElementById('highest').innerHTML = `${data[0].num} 万人次 (${data[0].date})`
-      document.getElementById('lowest').innerHTML = `${data[data.length - 1].num} 万人次 (${data[data.length - 1].date})`
+    ajax(`api/flows?sort=desc`).then(data => {
+      document.getElementById('highest').innerHTML = `${
+        data[0].num
+        } 万人次 (${data[0].date})`
+      document.getElementById('lowest').innerHTML = `${
+        data[data.length - 1].num
+        } 万人次 (${data[data.length - 1].date})`
     })
 
     document.getElementById('date').addEventListener('change', function () {
@@ -108,10 +122,12 @@
     })
 
     function ajax(url) {
+      url = url + '&city={{city}}'
       return fetch(url)
         .then(res => {
           return res.json()
-        }).then(v => {
+        })
+        .then(v => {
           return v.data
         })
     }
@@ -120,36 +136,42 @@
       container: 'mountNode',
       forceFit: true,
       height: window.innerHeight - 50
-    });
-    chart.source(data);
+    })
+    chart.source(data)
     chart.scale('num', {
-      min: 0,
-    });
+      min: 0
+    })
     chart.scale('date', {
-      range: [0, 1],
-    });
+      range: [0, 1]
+    })
     chart.tooltip({
       crosshairs: {
         type: 'line'
       }
-    });
-    chart.line().position('date*num');
-    chart.point().position('date*num').size(4).shape('circle').style({
-      stroke: '#fff',
-      lineWidth: 1
-    });
-    chart.render();
+    })
+    chart.line().position('date*num')
+    chart
+      .point()
+      .position('date*num')
+      .size(4)
+      .shape('circle')
+      .style({
+        stroke: '#fff',
+        lineWidth: 1
+      })
+    chart.render()
   </script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41610509-11"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
 
-    gtag('config', 'UA-41610509-11');
+    gtag('config', 'UA-41610509-11')
   </script>
-
 </body>
 
 </html>
