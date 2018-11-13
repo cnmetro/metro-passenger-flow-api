@@ -77,7 +77,35 @@ module.exports = async (fastify, opts) => {
     stmt.run(formatedDate, Number(num))
 
     return {
-      data: { formatedDate, num }
+      data: { date: formatedDate, num }
+    }
+  })
+
+  fastify.put('/api/flows', async (request, reply) => {
+    const { date, num, key, city } = request.body
+
+    if (cityArray.indexOf(city) === -1) {
+      return reply.code(400).send({ message: 'city required' })
+    }
+
+    if (key !== process.env.SECRET_KEY) {
+      return reply.code(403).send({ message: 'Forbidden' })
+    }
+
+    if (!isValid(new Date(date))) {
+      return reply.code(400).send({ message: 'date is invalid' })
+    }
+
+    if (typeof num !== 'number') {
+      return reply.code(400).send({ message: 'num type must be Number' })
+    }
+
+    const formatedDate = format(new Date(date), 'YYYY-MM-DD')
+    const stmt = db.prepare(`UPDATE ${city} SET num = ? WHERE date = ?`)
+    stmt.run(Number(num), formatedDate)
+
+    return {
+      data: { date: formatedDate, num }
     }
   })
 
