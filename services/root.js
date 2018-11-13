@@ -3,11 +3,22 @@ const isValid = require('date-fns/is_valid')
 const format = require('date-fns/format')
 
 module.exports = async (fastify, opts) => {
+  const cityArray = ['sh', 'bj', 'gz']
+  const cityNameObj = {
+    bj: '北京',
+    sh: '上海',
+    gz: '广州'
+  }
   const db = fastify.db()
 
-  fastify.get('/flows', async (request, reply) => {
-    let { sort, year, from, to, count } = request.query
-    let sql = `SELECT * FROM flow`
+  fastify.get('/api/flows', async (request, reply) => {
+    let { sort, year, from, to, count, city } = request.query
+
+    if (cityArray.indexOf(city) === -1) {
+      return reply.code(400).send({ message: 'city required' })
+    }
+
+    let sql = `SELECT * FROM ${city}`
 
     if (from || to) {
       from = from || '2016-04-30'
@@ -42,8 +53,12 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.post('/flows', async (request, reply) => {
-    const { date, num, key } = request.body
+  fastify.post('/api/flows', async (request, reply) => {
+    const { date, num, key, city } = request.body
+
+    if (cityArray.indexOf(city) === -1) {
+      return reply.code(400).send({ message: 'city required' })
+    }
 
     if (key !== process.env.SECRET_KEY) {
       return reply.code(403).send({ message: 'Forbidden' })
@@ -58,11 +73,24 @@ module.exports = async (fastify, opts) => {
     }
 
     const formatedDate = format(new Date(date), 'YYYY-MM-DD')
-    const stmt = db.prepare('INSERT INTO flow VALUES (?, ?)')
+    const stmt = db.prepare(`INSERT INTO ${city} VALUES (?, ?)`)
     stmt.run(formatedDate, Number(num))
 
     return {
       data: { formatedDate, num }
     }
+  })
+
+  fastify.get('/:city', async (request, reply) => {
+    const { city } = request.params
+
+    if (cityArray.indexOf(city) === -1) {
+      return reply.code(400).send({ message: 'city is wrong' })
+    }
+
+    reply.view('/templates/index.html', {
+      city,
+      name: cityNameObj[city]
+    })
   })
 }

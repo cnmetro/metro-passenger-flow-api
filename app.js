@@ -29,6 +29,12 @@ module.exports = function (fastify, opts, next) {
     root: path.join(__dirname, 'public')
   })
 
+  fastify.register(require('point-of-view'), {
+    engine: {
+      nunjucks: require('nunjucks')
+    }
+  })
+
   if (process.env.NODE_ENV !== 'test') {
     schedule.scheduleJob('0 */2 * * *', () => {
       console.log('worker running……')
