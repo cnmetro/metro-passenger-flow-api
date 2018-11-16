@@ -2,8 +2,8 @@
 
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
-const schedule = require('node-schedule')
-const worker = require('./schedule')
+// const schedule = require('node-schedule')
+// const worker = require('./schedule')
 
 module.exports = function (fastify, opts, next) {
   // Place here your custom code!
@@ -36,12 +36,12 @@ module.exports = function (fastify, opts, next) {
     }
   })
 
-  if (process.env.NODE_ENV !== 'test') {
-    schedule.scheduleJob('0 */2 * * *', () => {
-      console.log('worker running……')
-      worker(fastify)
-    })
-  }
+  // if (process.env.NODE_ENV !== 'test') {
+  //   schedule.scheduleJob('0 */2 * * *', () => {
+  //     console.log('worker running……')
+  //     worker(fastify)
+  //   })
+  // }
 
   // Make sure to call next when done
   next()
