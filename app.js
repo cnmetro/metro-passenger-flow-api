@@ -34,6 +34,10 @@ module.exports = function (fastify, opts, next) {
     }
   })
 
+  fastify.register(require('fastify-cors'), {
+    methods: ['GET']
+  })
+
   // Make sure to call next when done
   next()
 }

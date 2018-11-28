@@ -6,10 +6,6 @@ require('dotenv').config()
 // Require the framework
 const Fastify = require('fastify')
 
-Fastify.register(require('fastify-cors'), {
-  methods: ['GET']
-})
-
 // Instantiate fastify with some config
 const app = Fastify({
   logger: true,
