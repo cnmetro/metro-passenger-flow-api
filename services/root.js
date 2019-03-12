@@ -113,12 +113,9 @@ module.exports = async (fastify, opts) => {
     const { city } = request.params
 
     if (cityArray.indexOf(city) === -1) {
-      return reply.redirect('/public/index.html')
+      return reply.redirect('http://flows-chart.sinchang.me')
     }
 
-    reply.view('/templates/index.html', {
-      city,
-      name: cityNameObj[city]
-    })
+    reply.redirect(`http://flows-chart.sinchang.me/#/city/${city}`)
   })
 }
