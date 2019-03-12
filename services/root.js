@@ -4,11 +4,6 @@ const format = require('date-fns/format')
 
 module.exports = async (fastify, opts) => {
   const cityArray = ['sh', 'bj', 'gz']
-  const cityNameObj = {
-    bj: '北京',
-    sh: '上海',
-    gz: '广州'
-  }
   const db = fastify.db()
 
   fastify.get('/api/flows', async (request, reply) => {
