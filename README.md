@@ -10,6 +10,9 @@
 - [Beijing Metro Weibo](https://weibo.com/2778292197) - (2012/05/28 - present)
 - [Guangzhou Metro Weibo](https://weibo.com/2612249974) - (2015/02/18 - present)
 
+## Sponsor
+![https://www.jetbrains.com?from=cnmetro](https://www.jetbrains.com/company/brand/img/jetbrains_logo.png)
+
 ## LICENSE
 
 MIT
